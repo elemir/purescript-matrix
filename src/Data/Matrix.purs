@@ -18,7 +18,9 @@ import Prelude
 import Type.Proxy (Proxy(Proxy))
 
 import Data.Array (concat, length, range, slice, zipWith, (!!))
+import Data.FunctorWithIndex(class FunctorWithIndex, mapWithIndex)
 import Data.Maybe (fromJust)
+import Data.Newtype (over, class Newtype)
 import Data.String (joinWith)
 import Data.Tuple (Tuple, fst, snd)
 import Data.Tuple.Nested ((/\))
@@ -28,6 +30,8 @@ import Data.TypeNat (class Sized, Four, Three, Two, One, sized)
 import Data.Vector as V
 
 newtype Mat r c a = Mat (Array a)
+
+derive instance newtypeMat :: Newtype (Mat r c a) _
 
 dim :: forall r c a. Sized r => Sized c => Mat r c a -> Tuple Int Int
 dim _ = (sized (Proxy :: Proxy r)) /\ (sized (Proxy :: Proxy c))
@@ -62,6 +66,11 @@ instance eqMat :: (Eq a) => Eq (Mat r c a) where
 
 instance functorMat :: Functor (Mat r c) where
   map f (Mat l) = Mat (map f l)
+
+instance functorWithIndexMat :: FunctorWithIndex Int (Mat r c) where
+  mapWithIndex f =  over Mat (mapWithIndex f)
+-- instance functorWithIndexMat :: FunctorWithIndex Int (Mat r c) where
+--   mapWithIndex f (Mat l) =  Mat (mapWithIndex f l)
 
 instance applyMat :: Apply (Mat r c) where
   apply (Mat f) (Mat a) = Mat (zipWith (\f' a' -> f' a') f a)
