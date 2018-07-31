@@ -120,10 +120,10 @@ makeFrustum left right bottom top znear zfar =
       b = (top+bottom)/(top-bottom)
       c = -(zfar+znear)/(zfar-znear)
       d = -2.0*zfar*znear/(zfar-znear)
-  in Mat [2.0*znear/(right-left),0.0,0.0,0.0,
-          0.0,2.0*znear/(top-bottom),0.0,0.0,
-          (right+left)/(right-left),(top+bottom)/(top-bottom),-(zfar+znear)/(zfar-znear),(-1.0),
-          0.0,0.0,(-2.0)*zfar*znear/(zfar-znear),0.0]
+  in Mat [x,0.0,0.0,0.0,
+          0.0,y,0.0,0.0,
+          z,b,c,(-1.0),
+          0.0,0.0,d,0.0]
 
 -- | Creates a matrix for a perspective projection with the given parameters.
 -- Parameters:
