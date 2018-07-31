@@ -46,10 +46,10 @@ cloneSTMat (STMat arr) = STMat <<< unsafeThaw <$> freeze arr
 fromSTMat :: forall s h a. (Sized s) => (STMat s h a) -> Effect (M.Mat s a)
 fromSTMat (STMat arr) = do
     x   <- freeze arr
-    pure (M.fromArray x)
+    pure (M.fromArrayColumns x)
 
 toSTMat :: forall s h a. (M.Mat s a) -> Effect (STMat s h a)
-toSTMat m = STMat <$> thaw (M.toArray m)
+toSTMat m = STMat <$> thaw (M.toArrayColumns m)
 
 -- copyToSTMat :: forall s h a. (M.Matrix (M.Mat s) a) => (M.Mat s a) -> (STMat s h a) -> Effect Unit
 
@@ -58,7 +58,7 @@ foreign import copyToSTMat :: forall s h a. (M.Mat s a) -> (STMat s h a) -> Effe
 identityST' :: forall s h. (Sized s) => Effect (STMat s h Number)
 identityST' =
     let m = M.identity' :: M.Mat s Number
-    in STMat <$> thaw (M.toArray m)
+    in STMat <$> thaw (M.toArrayColumns m)
 
 foreign import scaleSTMatrixInt :: forall a h. (EuclideanRing a) => a -> STArray h a -> Effect Unit
 

@@ -16,14 +16,14 @@ module Data.Matrix3 where
 
 import Prelude ((*), (+), (-), ($), (/), (==))
 import Data.TypeNat (Four, Three)
-import Data.Matrix (Mat(Mat), fromArray)
+import Data.Matrix (Mat(Mat), fromArrayColumns)
 import Data.Maybe (Maybe(Just, Nothing))
 import Partial.Unsafe (unsafeCrashWith)
 
 type Mat3 = Mat Three Number
 
 mat3 :: Array Number -> Mat3
-mat3 = fromArray
+mat3 = fromArrayColumns
 
 identity :: Mat3
 identity = Mat
