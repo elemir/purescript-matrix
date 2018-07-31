@@ -2,9 +2,13 @@
   "name": "purescript-matrix",
   "homepage": "https://github.com/jutaro/purescript-matrix",
   "version": "3.0.0",
-  "authors": ["Juergen Nicklisch-Franken <jnf@arcor.de>"],
+  "authors": [
+    "Juergen Nicklisch-Franken <jnf@arcor.de>"
+  ],
   "description": "Matrices for purescript",
-  "keywords": ["purescript"],
+  "keywords": [
+    "purescript"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/mgmeier/purescript-matrix.git"
@@ -25,7 +29,8 @@
     "purescript-vector": "AlexMouton/purescript-vector#compiler-0.12",
     "purescript-arrays": "^5.0.0",
     "purescript-proxy": "^3.0.0",
-    "purescript-effect": "2.0.0"
+    "purescript-effect": "2.0.0",
+    "purescript-strings": "^4.0.0"
   },
   "devDependencies": {
     "purescript-assert": "^4.0.0",
