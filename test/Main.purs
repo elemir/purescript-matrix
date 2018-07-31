@@ -5,6 +5,11 @@ import Prelude
 import Data.Matrix4 (Mat4, Vec3N, identity, translate, rotate) as M
 import Data.ST.Matrix4 (STMat4, translateST, rotateST, identityST) as M
 import Data.ST.Matrix (runSTMatrix) as M
+
+import Test.Spec (pending)
+import Test.Spec.Reporter.Console (consoleReporter)
+import Test.Spec.Runner (RunnerEffects, run)
+
 import Data.Vector as V
 
 import Effect (Effect)
@@ -25,14 +30,17 @@ ys = M.rotate 90.0 meh $ M.identity
 zs :: M.Mat4
 zs = M.translate meh $ M.identity
 
+preexisting :: Effect Unit
+preexisting = do
+  xs <- M.runSTMatrix (ble >>= \m -> M.rotateST 90.0 meh m *> pure m)
+  bs <- M.runSTMatrix (ble >>= \m -> M.translateST meh m *> pure m)
+
+  logShow xs
+  logShow ys
+
+  logShow bs
+  logShow zs
+
 main :: Effect Unit
-main = do
-
-    xs <- M.runSTMatrix (ble >>= \m -> M.rotateST 90.0 meh m *> pure m)
-    bs <- M.runSTMatrix (ble >>= \m -> M.translateST meh m *> pure m)
-
-    logShow xs
-    logShow ys
-
-    logShow bs
-    logShow zs
+main = run [consoleReporter] do
+  pending "tests"

@@ -30,6 +30,7 @@
   "devDependencies": {
     "purescript-assert": "^4.0.0",
     "purescript-console": "^4.1.0",
-    "purescript-random": "^4.0.0"
+    "purescript-random": "^4.0.0",
+    "purescript-spec": "git://github.com/owickstrom/purescript-spec.git#master"
   }
 }
