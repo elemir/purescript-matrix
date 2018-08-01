@@ -21,7 +21,7 @@ import Data.Array.ST (STArray)
 import Data.Matrix as M
 
 
-newtype STMat s h a = STMat (STArray h a)
+newtype STMat r c h a = STMat (STArray h a)
 
 -- try array cloning with .slice() instead of the for-loop
 -- implementation in Data.Array.ST. Needs benchmarking.
@@ -40,32 +40,32 @@ foreign import unsafeFreeze :: forall a h. STArray h a -> Array a
 
 foreign import unsafeThaw :: forall a h. Array a -> STArray h a
 
-cloneSTMat :: forall s h a. (STMat s h a) -> Effect (STMat s h a)
+cloneSTMat :: forall r c h a. (STMat r c h a) -> Effect (STMat r c h a)
 cloneSTMat (STMat arr) = STMat <<< unsafeThaw <$> freeze arr
 
-fromSTMat :: forall s h a. (Sized s) => (STMat s h a) -> Effect (M.Mat s a)
+fromSTMat :: forall r c h a. (Sized r) => (Sized c) => (STMat r c h a) -> Effect (M.Mat r c a)
 fromSTMat (STMat arr) = do
     x   <- freeze arr
     pure (M.fromArrayColumns x)
 
-toSTMat :: forall s h a. (M.Mat s a) -> Effect (STMat s h a)
+toSTMat :: forall r c h a. (M.Mat r c a) -> Effect (STMat r c h a)
 toSTMat m = STMat <$> thaw (M.toArrayColumns m)
 
 -- copyToSTMat :: forall s h a. (M.Matrix (M.Mat s) a) => (M.Mat s a) -> (STMat s h a) -> Effect Unit
 
-foreign import copyToSTMat :: forall s h a. (M.Mat s a) -> (STMat s h a) -> Effect Unit
+foreign import copyToSTMat :: forall r c h a. (M.Mat r c a) -> (STMat r c h a) -> Effect Unit
 
-identityST' :: forall s h. (Sized s) => Effect (STMat s h Number)
+identityST' :: forall r c h. (Sized r) => (Sized c) => Effect (STMat r c h Number)
 identityST' =
-    let m = M.identity' :: M.Mat s Number
+    let m = M.identity' :: M.Mat r c Number
     in STMat <$> thaw (M.toArrayColumns m)
 
 foreign import scaleSTMatrixInt :: forall a h. (EuclideanRing a) => a -> STArray h a -> Effect Unit
 
-scaleSTMatrix :: forall s a h. (EuclideanRing a) => a -> (STMat s h a) -> Effect (STMat s h a)
+scaleSTMatrix :: forall r c a h. (EuclideanRing a) => a -> (STMat r c h a) -> Effect (STMat r c h a)
 scaleSTMatrix x v@(STMat arr) = scaleSTMatrixInt x arr *> pure v
 
-fromMatrix :: forall s h a. M.Mat s a -> Effect (STMat s h a)
+fromMatrix :: forall r c h a. M.Mat r c a -> Effect (STMat r c h a)
 fromMatrix (M.Mat m) = STMat <$> thaw m
 
-foreign import runSTMatrix :: forall s a. (forall h. Effect (STMat s h a)) -> Effect (M.Mat s a)
+foreign import runSTMatrix :: forall r c a. (forall h. Effect (STMat r c h a)) -> Effect (M.Mat r c a)

@@ -20,9 +20,9 @@ import Data.Matrix4 (Vec3N())
 import Data.ST.Matrix (STMat)
 import Effect (Effect)
 
-type STMat4 h = STMat Four h Number
+type STMat4 h = STMat Four Four h Number
 
-foreign import identityST  :: forall h. Effect (STMat Four h Number)
+foreign import identityST  :: forall h. Effect (STMat Four Four h Number)
 
 foreign import rotateST  :: forall h. Number -> Vec3N -> STMat4 h -> Effect Unit
 

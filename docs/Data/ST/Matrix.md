@@ -4,20 +4,20 @@ Binding to mjs library
 
 #### `STMat`
 
-``` purescript
-newtype STMat s h a
+```purescript
+newtype STMat r c h a
   = STMat (STArray h a)
 ```
 
 #### `copyImpl`
 
-``` purescript
+```purescript
 copyImpl :: forall a b h. a -> Effect b
 ```
 
 #### `freeze`
 
-``` purescript
+```purescript
 freeze :: forall a h. STArray h a -> Effect (Array a)
 ```
 
@@ -25,7 +25,7 @@ Create an immutable copy of a mutable array.
 
 #### `thaw`
 
-``` purescript
+```purescript
 thaw :: forall a h. Array a -> Effect (STArray h a)
 ```
 
@@ -33,7 +33,7 @@ Create a mutable copy of an immutable array.
 
 #### `unsafeFreeze`
 
-``` purescript
+```purescript
 unsafeFreeze :: forall a h. STArray h a -> Array a
 ```
 
@@ -41,62 +41,60 @@ Freeze an ST array. Do not mutate the STArray afterwards!
 
 #### `unsafeThaw`
 
-``` purescript
+```purescript
 unsafeThaw :: forall a h. Array a -> STArray h a
 ```
 
 #### `cloneSTMat`
 
-``` purescript
-cloneSTMat :: forall s h a. (STMat s h a) -> Effect (STMat s h a)
+```purescript
+cloneSTMat :: forall r c h a. (STMat r c h a) -> Effect (STMat r c h a)
 ```
 
 #### `fromSTMat`
 
-``` purescript
-fromSTMat :: forall s h a. Sized s => (STMat s h a) -> Effect (Mat s a)
+```purescript
+fromSTMat :: forall r c h a. Sized r => Sized c => (STMat r c h a) -> Effect (Mat r c a)
 ```
 
 #### `toSTMat`
 
-``` purescript
-toSTMat :: forall s h a. (Mat s a) -> Effect (STMat s h a)
+```purescript
+toSTMat :: forall r c h a. (Mat r c a) -> Effect (STMat r c h a)
 ```
 
 #### `copyToSTMat`
 
-``` purescript
-copyToSTMat :: forall s h a. (Mat s a) -> (STMat s h a) -> Effect Unit
+```purescript
+copyToSTMat :: forall r c h a. (Mat s a) -> (STMat r c h a) -> Effect Unit
 ```
 
 #### `identityST'`
 
-``` purescript
-identityST' :: forall s h. Sized s => Effect (STMat s h Number)
+```purescript
+identityST' :: forall r c h. Sized r => Sized c => Effect (STMat r c h Number)
 ```
 
 #### `scaleSTMatrixInt`
 
-``` purescript
+```purescript
 scaleSTMatrixInt :: forall a h. EuclideanRing a => a -> STArray h a -> Effect Unit
 ```
 
 #### `scaleSTMatrix`
 
-``` purescript
-scaleSTMatrix :: forall s a h. EuclideanRing a => a -> (STMat s h a) -> Effect (STMat s h a)
+```purescript
+scaleSTMatrix :: forall r c a h. EuclideanRing a => a -> (STMat r c h a) -> Effect (STMat r c h a)
 ```
 
 #### `fromMatrix`
 
-``` purescript
-fromMatrix :: forall s h a. Mat s a -> Effect (STMat s h a)
+```purescript
+fromMatrix :: forall r c h a. Mat r c a -> Effect (STMat r c h a)
 ```
 
 #### `runSTMatrix`
 
-``` purescript
-runSTMatrix :: forall s a. (forall h. Effect (STMat s h a)) -> Effect (Mat s a)
+```purescript
+runSTMatrix :: forall r c a. (forall h. Effect (STMat r c h a)) -> Effect (Mat r c a)
 ```
-
-
