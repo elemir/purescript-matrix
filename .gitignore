@@ -9,3 +9,5 @@ dist/*.js
 .bowerrc
 .bower.json
 .pulp-cache/
+.purs-repl
+.spago/

@@ -339,11 +339,11 @@ translate _ _               = unsafeCrashWith "Matrix3>>translate: Impossible!"
 makeLookAt :: Vec3N -> Vec3N -> Vec3N -> Mat4
 makeLookAt eye@(V.Vec [e0,e1,e2]) center up =
   case V.direction eye center of
-    z@V.Vec [z0,z1,z2] ->
+    z@(V.Vec [z0,z1,z2]) ->
       case V.normalize (V.cross up z) of
-        x@V.Vec [x0,x1,x2] ->
+        x@(V.Vec [x0,x1,x2]) ->
           case V.normalize (V.cross z x) of
-            y@V.Vec [y0,y1,y2] ->
+            y@(V.Vec [y0,y1,y2]) ->
               let m1 = Mat [x0,y0,z0,0.0,
                              x1,y1,z1,0.0,
                              x2,y2,z2,0.0,
@@ -406,7 +406,7 @@ project (V.Vec [objx,objy,objz])
                             in Just (V.Vec [(gt0' * 0.5 + 0.5) * vp2 + vp0,
                                            (gt1' * 0.5 + 0.5) * vp3 + vp1,
                                            -- This is only correct when glDepthRange(0.0, 1.0)
-                                           (1.0 + gt2') * 0.5])	-- Between 0 and 1
+                                           (1.0 + gt2') * 0.5]) -- Between 0 and 1
                 _ -> unsafeCrashWith "Matrix4>>project: Impossible!"
         _ ->    unsafeCrashWith "Matrix4>>project: Impossible!"
 project _ _ _ _ = unsafeCrashWith "Matrix4>>project: Impossible!"
